@@ -54,6 +54,13 @@ export class TodoDataStoreService {
     return of(newItem);
   }
 
+  /**
+   * Updates a single TODO item.
+   *
+   * @param req The request parameters to update the existing item.
+   * @returns An observable which emits the updated item on successful update,
+   *   or an error if something went wrong.
+   */
   updateItem(req: UpdateTodoItemRequest): Observable<TodoItem> {
     const storeItems: TodoItem[] = JSON.parse(this.read());
     const existingItem = storeItems.find((item) => item.id === req.id);
@@ -71,6 +78,13 @@ export class TodoDataStoreService {
     return of(existingItem);
   }
 
+  /**
+   * Deletes a single TODO item.
+   *
+   * @param itemId The ID of the existing item.
+   * @returns An observable which emits null on successful delete, or an error
+   *   if something went wrong.
+   */
   deleteItem(itemId: TodoItem['id']): Observable<null> {
     const storeItems: TodoItem[] = JSON.parse(this.read());
     const itemIndex = storeItems.findIndex((item) => item.id === itemId);
@@ -83,6 +97,29 @@ export class TodoDataStoreService {
     storeItems.splice(itemIndex, 1);
     this.write(JSON.stringify(storeItems));
 
+    return of(null);
+  }
+
+  /**
+   * Deletes multiple TODO items. It ignores the items which are not found in
+   * the data store and doesn't throw any error.
+   *
+   * @param itemIds An array of the item IDs to delete.
+   * @returns An observable, which emits null on successful delete.
+   */
+  deleteItems(itemIds: TodoItem['id'][]): Observable<null> {
+    const storeItems: TodoItem[] = JSON.parse(this.read());
+
+    itemIds.forEach((itemId) => {
+      const itemIndex = storeItems.findIndex((item) => item.id === itemId);
+
+      if (itemIndex !== -1) {
+        storeItems.splice(itemIndex, 1);
+      }
+    });
+
+    // Update the store
+    this.write(JSON.stringify(storeItems));
     return of(null);
   }
 
