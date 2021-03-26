@@ -25,6 +25,6 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.mat-h1').textContent).toContain(app.title);
+    expect(compiled.querySelector('h1').textContent).toContain(app.title);
   });
 });

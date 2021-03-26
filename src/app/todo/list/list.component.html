@@ -1,1 +1,25 @@
-<p>list works!</p>
+<form (submit)="onFormSubmit()">
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Add an item</mat-label>
+    <input
+      type="text"
+      placeholder="Type the text and press Enter"
+      #addItemInput
+      matInput
+      [formControl]="itemLabelControl"
+    />
+  </mat-form-field>
+</form>
+
+<mat-divider></mat-divider>
+
+<ng-container *ngIf="(items$ | async).length; else noItems">
+  <app-todo-list-item *ngFor="let item of items$ | async"></app-todo-list-item>
+</ng-container>
+
+<ng-template #noItems>
+  <div class="no-items-message">
+    <h1>You're all clear!</h1>
+    <p>Your TODO list is empty. Add items using the input box above.</p>
+  </div>
+</ng-template>
