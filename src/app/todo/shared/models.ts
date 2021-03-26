@@ -25,6 +25,11 @@ export interface TodoItem {
   title: string;
 
   /**
+   * The priority of the item.
+   */
+  priority: 'low' | 'moderate' | 'high';
+
+  /**
    * Indicates whether this item has been marked as done.
    */
   isDone: boolean;
@@ -33,9 +38,12 @@ export interface TodoItem {
 /**
  * A type to pass information for creating a TODO item.
  */
-export type CreateTodoItemRequest = Pick<TodoItem, 'title'>;
+export type CreateTodoItemRequest = Pick<TodoItem, 'title' | 'priority'>;
 
 /**
  * A type to pass information for updating a TODO item.
  */
-export type UpdateTodoItemRequest = Pick<TodoItem, 'id' | 'title' | 'isDone'>;
+export type UpdateTodoItemRequest = Pick<
+  TodoItem,
+  'id' | 'title' | 'priority' | 'isDone'
+>;

@@ -42,6 +42,7 @@ export class TodoDataStoreService {
       createdAt: Date.now(),
       lastUpdatedAt: Date.now(),
       title: req.title,
+      priority: req.priority,
       isDone: false,
     };
 
