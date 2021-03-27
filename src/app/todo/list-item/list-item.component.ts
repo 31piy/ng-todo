@@ -1,9 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   Input,
   Output,
+  ViewChild,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 import { TodoItem } from '../shared';
@@ -46,6 +49,60 @@ export class ListItemComponent {
    * Emits whenever this item is deleted by the user.
    */
   @Output() deleted = new Subject();
+
+  /**
+   * A flag to indicate whether this component is in edit mode.
+   */
+  editMode = false;
+
+  /**
+   * Form control for the item's label. Used in edit mode only.
+   */
+  itemLabelControl = new FormControl();
+
+  /**
+   * Reference to the item title input element.
+   */
+  @ViewChild('itemTitleInput') private itemTitleInput: ElementRef;
+
+  /**
+   * Callback for the "dblclick" event on the item title.
+   */
+  onItemTitleDblClick(): void {
+    this.itemLabelControl.setValue(this.item.title);
+    this.editMode = true;
+
+    // Allow change detector to run before focusing the input.
+    window.setTimeout(() => {
+      this.itemTitleInput.nativeElement.select();
+      this.itemTitleInput.nativeElement.focus();
+    }, 0);
+  }
+
+  /**
+   * Callback for the "submit" event of the form.
+   */
+  onFormSubmit(): void {
+    if (this.itemLabelControl.value?.trim()) {
+      const newItem = { ...this.item };
+
+      newItem.title = this.itemLabelControl.value;
+      this.modified.next(newItem);
+
+      this.editMode = false;
+    }
+  }
+
+  /**
+   * Callback for the "keyup" event on the item title input.
+   *
+   * @param ev The keyboard event object.
+   */
+  onItemLabelInputKeyup(ev: KeyboardEvent): void {
+    if (ev.key === 'Escape') {
+      this.editMode = false;
+    }
+  }
 
   /**
    * Callback for the "click" event on the priority toggle button.

@@ -1,15 +1,40 @@
-<mat-list-item [ngClass]="{ 'is-done': item.isDone }">
-  <h3 matLine>{{ item.title }}</h3>
+<mat-list-item [ngClass]="{ 'is-done': item.isDone, 'is-editing': editMode }">
+  <h3
+    class="item-title"
+    matLine
+    matTooltip="Double click on edit"
+    *ngIf="!editMode"
+    (dblclick)="onItemTitleDblClick()"
+  >
+    {{ item.title }}
+  </h3>
 
-  <div matLine>
+  <div matLine *ngIf="!editMode">
     <ul class="item-meta">
       <li>Priority: {{ item.priority | titlecase }}</li>
       <li>Last updated: {{ item.lastUpdatedAt | date: "medium" }}</li>
     </ul>
   </div>
+
+  <ng-container *ngIf="editMode">
+    <form (submit)="onFormSubmit()" class="w-100">
+      <mat-form-field matLine>
+        <mat-label>Update the Item</mat-label>
+
+        <input
+          type="text"
+          placeholder="Type the new text and press Enter"
+          matInput
+          [formControl]="itemLabelControl"
+          #itemTitleInput
+          (keyup)="onItemLabelInputKeyup($event)"
+        />
+      </mat-form-field>
+    </form>
+  </ng-container>
 </mat-list-item>
 
-<div class="actions">
+<div class="actions" *ngIf="!editMode">
   <button
     mat-icon-button
     matTooltip="Toggle Priority"

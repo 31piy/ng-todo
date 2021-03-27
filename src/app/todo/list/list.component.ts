@@ -49,7 +49,7 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * Reference to the item label input.
    */
-  @ViewChild('addItemInput') addItemInput: ElementRef;
+  @ViewChild('addItemInput') private addItemInput: ElementRef;
 
   constructor(
     private storeService: TodoDataStoreService,
