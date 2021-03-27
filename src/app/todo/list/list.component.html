@@ -14,7 +14,12 @@
 <mat-divider></mat-divider>
 
 <ng-container *ngIf="(items$ | async).length; else noItems">
-  <app-todo-list-item *ngFor="let item of items$ | async"></app-todo-list-item>
+  <mat-list>
+    <app-todo-list-item
+      *ngFor="let item of items$ | async"
+      [item]="item"
+    ></app-todo-list-item>
+  </mat-list>
 </ng-container>
 
 <ng-template #noItems>

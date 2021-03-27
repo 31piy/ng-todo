@@ -37,7 +37,7 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * Form control for the item label input.
    */
-  itemLabelControl = new FormControl(null, Validators.required);
+  itemLabelControl = new FormControl();
 
   /**
    * An array of the subscriptions created inside this component. Will be used
@@ -79,7 +79,7 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
    * Callback for the "submit" event of the form.
    */
   onFormSubmit(): void {
-    if (this.itemLabelControl.valid) {
+    if (this.itemLabelControl.value.trim()) {
       const req: CreateTodoItemRequest = {
         title: this.itemLabelControl.value,
         priority: 'low',

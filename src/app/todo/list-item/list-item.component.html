@@ -1,1 +1,20 @@
-<p>list-item works!</p>
+<mat-list-item>
+  <h3 matLine>{{ item.title }}</h3>
+
+  <div matLine>
+    <ul class="item-meta">
+      <li>Priority: {{ item.priority | titlecase }}</li>
+      <li>Last updated: {{ item.lastUpdatedAt | date: "medium" }}</li>
+    </ul>
+  </div>
+</mat-list-item>
+
+<div class="actions">
+  <button mat-icon-button matTooltip="Toggle Priority">
+    <mat-icon>priority_high</mat-icon>
+  </button>
+
+  <button mat-icon-button matTooltip="Mark Done">
+    <mat-icon>done</mat-icon>
+  </button>
+</div>
