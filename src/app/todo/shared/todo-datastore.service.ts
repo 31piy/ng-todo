@@ -71,6 +71,7 @@ export class TodoDataStoreService {
 
     // Mutate the item and update the store
     existingItem.title = req.title;
+    existingItem.priority = req.priority;
     existingItem.isDone = req.isDone;
     existingItem.lastUpdatedAt = Date.now();
     this.write(JSON.stringify(storeItems));

@@ -27,7 +27,7 @@ export interface TodoItem {
   /**
    * The priority of the item.
    */
-  priority: 'low' | 'moderate' | 'high';
+  priority: 'low' | 'high';
 
   /**
    * Indicates whether this item has been marked as done.

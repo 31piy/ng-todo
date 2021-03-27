@@ -11,6 +11,10 @@
   }
 }
 
+mat-list-item.is-done {
+  opacity: 0.3;
+}
+
 ul.item-meta {
   font-size: smaller;
   list-style: none;

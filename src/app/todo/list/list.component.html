@@ -1,6 +1,7 @@
 <form (submit)="onFormSubmit()">
   <mat-form-field appearance="fill" class="w-100">
     <mat-label>Add an item</mat-label>
+
     <input
       type="text"
       placeholder="Type the text and press Enter"
@@ -18,6 +19,8 @@
     <app-todo-list-item
       *ngFor="let item of items$ | async"
       [item]="item"
+      (modified)="onItemModified($event)"
+      (deleted)="onItemDeleted(item)"
     ></app-todo-list-item>
   </mat-list>
 </ng-container>

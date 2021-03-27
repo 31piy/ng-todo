@@ -7,8 +7,9 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import {
   CreateTodoItemRequest,
@@ -57,7 +58,7 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.storeService.getItems().subscribe((items) => this.items$.next(items))
+      this.getItems().subscribe((items) => this.items$.next(items))
     );
   }
 
@@ -76,6 +77,15 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
+   * Fetches the TODO items from the data store.
+   *
+   * @returns An observable of the TODO items.
+   */
+  getItems(): Observable<TodoItem[]> {
+    return this.storeService.getItems();
+  }
+
+  /**
    * Callback for the "submit" event of the form.
    */
   onFormSubmit(): void {
@@ -86,11 +96,42 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
       };
 
       this.subscriptions.push(
-        this.storeService.createItem(req).subscribe((item) => {
-          const currentItems = this.items$.value;
-          this.items$.next([...currentItems, item]);
-        })
+        this.storeService
+          .createItem(req)
+          .pipe(switchMap(() => this.getItems()))
+          .subscribe((items) => {
+            this.items$.next(items);
+            this.itemLabelControl.setValue('');
+          })
       );
     }
+  }
+
+  /**
+   * Callback for the "modified" event on the list item.
+   *
+   * @param newItem A copy of the item modified.
+   */
+  onItemModified(newItem: TodoItem): void {
+    this.subscriptions.push(
+      this.storeService
+        .updateItem(newItem)
+        .pipe(switchMap(() => this.getItems()))
+        .subscribe((items) => this.items$.next(items))
+    );
+  }
+
+  /**
+   * Callback for the "deleted" event on the list item.
+   *
+   * @param item The item which was deleted.
+   */
+  onItemDeleted(item: TodoItem): void {
+    this.subscriptions.push(
+      this.storeService
+        .deleteItem(item.id)
+        .pipe(switchMap(() => this.getItems()))
+        .subscribe((items) => this.items$.next(items))
+    );
   }
 }

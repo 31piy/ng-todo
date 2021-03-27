@@ -1,4 +1,4 @@
-<mat-list-item>
+<mat-list-item [ngClass]="{ 'is-done': item.isDone }">
   <h3 matLine>{{ item.title }}</h3>
 
   <div matLine>
@@ -10,11 +10,23 @@
 </mat-list-item>
 
 <div class="actions">
-  <button mat-icon-button matTooltip="Toggle Priority">
+  <button
+    mat-icon-button
+    matTooltip="Toggle Priority"
+    (click)="onPriorityToggleClick()"
+  >
     <mat-icon>priority_high</mat-icon>
   </button>
 
-  <button mat-icon-button matTooltip="Mark Done">
+  <button
+    mat-icon-button
+    matTooltip="Toggle Mark Done"
+    (click)="onMarkDoneToggleClick()"
+  >
     <mat-icon>done</mat-icon>
+  </button>
+
+  <button mat-icon-button matTooltip="Delete" (click)="onDelete()">
+    <mat-icon>delete</mat-icon>
   </button>
 </div>

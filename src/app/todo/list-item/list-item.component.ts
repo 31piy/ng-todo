@@ -28,14 +28,7 @@ export class ListItemComponent {
   /**
    * The TODO list item.
    */
-  @Input() item: TodoItem = {
-    id: 0,
-    createdAt: 0,
-    lastUpdatedAt: 0,
-    title: '',
-    isDone: false,
-    priority: 'low',
-  };
+  @Input() item: TodoItem;
 
   /**
    * Emits whenever this item is toggled by the user. The value determines
@@ -53,4 +46,31 @@ export class ListItemComponent {
    * Emits whenever this item is deleted by the user.
    */
   @Output() deleted = new Subject();
+
+  /**
+   * Callback for the "click" event on the priority toggle button.
+   */
+  onPriorityToggleClick(): void {
+    const newItem = { ...this.item };
+
+    newItem.priority = newItem.priority === 'low' ? 'high' : 'low';
+    this.modified.next(newItem);
+  }
+
+  /**
+   * Callback for the "click" event on the mark done toggle button.
+   */
+  onMarkDoneToggleClick(): void {
+    const newItem = { ...this.item };
+
+    newItem.isDone = !newItem.isDone;
+    this.modified.next(newItem);
+  }
+
+  /**
+   * Callback for the "click" event on the delete button.
+   */
+  onDelete(): void {
+    this.deleted.next();
+  }
 }
