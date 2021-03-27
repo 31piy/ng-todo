@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
-import { TodoDataStoreService } from '../shared';
+import { TodoDataStoreService, TodoItem } from '../shared';
 import { ListComponent } from './list.component';
 
 describe('ListComponent', () => {
@@ -30,15 +31,25 @@ describe('ListComponent', () => {
 
   describe('ngOnInit', () => {
     it('should load items', () => {
-      spyOn(storeService, 'getItems').and.callThrough();
+      spyOn(storeService, 'getItems').and.returnValue(of([]));
       component.ngOnInit();
       expect(storeService.getItems).toHaveBeenCalled();
     });
   });
 
   describe('onFormSubmit', () => {
+    const mockItem: TodoItem = {
+      id: 1,
+      createdAt: 0,
+      lastUpdatedAt: 0,
+      isDone: false,
+      priority: 'low',
+      title: '',
+    };
+
     beforeEach(() => {
-      spyOn(storeService, 'createItem').and.callThrough();
+      spyOn(storeService, 'createItem').and.returnValue(of(mockItem));
+      spyOn(storeService, 'getItems').and.returnValue(of([mockItem]));
     });
 
     it('does not add item if no value is specified', () => {

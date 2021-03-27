@@ -94,17 +94,6 @@ export class ListItemComponent {
   }
 
   /**
-   * Callback for the "keyup" event on the item title input.
-   *
-   * @param ev The keyboard event object.
-   */
-  onItemLabelInputKeyup(ev: KeyboardEvent): void {
-    if (ev.key === 'Escape') {
-      this.editMode = false;
-    }
-  }
-
-  /**
    * Callback for the "click" event on the priority toggle button.
    */
   onPriorityToggleClick(): void {
