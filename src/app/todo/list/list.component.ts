@@ -1,8 +1,10 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -33,12 +35,22 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * A subject of the current TODO items in the list.
    */
-  items$ = new BehaviorSubject<TodoItem[]>([]);
+  readonly items$ = new BehaviorSubject<TodoItem[]>([]);
 
   /**
    * Form control for the item label input.
    */
-  itemLabelControl = new FormControl();
+  readonly itemLabelControl = new FormControl();
+
+  /**
+   * A model to keep track of the selected items.
+   */
+  readonly selection = new SelectionModel<number>(true, []);
+
+  /**
+   * Stores the currently focused item index.
+   */
+  focusedItemIndex = -1;
 
   /**
    * An array of the subscriptions created inside this component. Will be used
@@ -83,6 +95,58 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   getItems(): Observable<TodoItem[]> {
     return this.storeService.getItems();
+  }
+
+  /**
+   * Callback for the "keydown" event on the document.
+   *
+   * @param ev The keyboard event object.
+   */
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeydown(ev: KeyboardEvent): void {
+    if (ev.target !== document.body) {
+      return;
+    }
+
+    if (!['ArrowUp', 'ArrowDown', 'Space', 'Delete'].includes(ev.code)) {
+      return;
+    }
+
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    if (ev.code === 'ArrowUp') {
+      this.focusedItemIndex -= 1;
+
+      if (this.focusedItemIndex < 0) {
+        this.focusedItemIndex = this.items$.value.length - 1;
+      }
+    } else if (ev.code === 'ArrowDown') {
+      this.focusedItemIndex += 1;
+
+      if (this.focusedItemIndex > this.items$.value.length - 1) {
+        this.focusedItemIndex = 0;
+      }
+    } else if (ev.code === 'Space') {
+      if (this.focusedItemIndex !== -1) {
+        this.selection.toggle(this.items$.value[this.focusedItemIndex].id);
+      }
+    } else if (ev.code === 'Delete') {
+      if (this.selection.isEmpty()) {
+        return;
+      }
+
+      this.subscriptions.push(
+        this.storeService
+          .deleteItems(this.selection.selected)
+          .pipe(switchMap(() => this.getItems()))
+          .subscribe((items) => {
+            this.selection.clear();
+            this.focusedItemIndex = -1;
+            this.items$.next(items);
+          })
+      );
+    }
   }
 
   /**
@@ -133,5 +197,14 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
         .pipe(switchMap(() => this.getItems()))
         .subscribe((items) => this.items$.next(items))
     );
+  }
+
+  /**
+   * Callback for the "toggleSelection" event on the list item.
+   *
+   * @param item The item which was selected/deselected.
+   */
+  onItemToggleSelection(item: TodoItem): void {
+    this.selection.toggle(item.id);
   }
 }

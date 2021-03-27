@@ -17,10 +17,16 @@
 <ng-container *ngIf="(items$ | async).length; else noItems">
   <mat-list>
     <app-todo-list-item
-      *ngFor="let item of items$ | async"
+      *ngFor="let item of items$ | async; let index = index"
+      [ngClass]="{
+        focused: index === focusedItemIndex,
+        selected: selection.isSelected(item.id)
+      }"
       [item]="item"
+      [selected]="selection.isSelected(item.id)"
       (modified)="onItemModified($event)"
       (deleted)="onItemDeleted(item)"
+      (toggleSelection)="onItemToggleSelection(item)"
     ></app-todo-list-item>
   </mat-list>
 </ng-container>

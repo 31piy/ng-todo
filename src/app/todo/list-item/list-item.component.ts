@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Subject } from 'rxjs';
 
 import { TodoItem } from '../shared';
@@ -32,6 +33,11 @@ export class ListItemComponent {
    * The TODO list item.
    */
   @Input() item: TodoItem;
+
+  /**
+   * Determines whether this item is selected.
+   */
+  @Input() selected: boolean;
 
   /**
    * Emits whenever this item is toggled by the user. The value determines
@@ -64,6 +70,15 @@ export class ListItemComponent {
    * Reference to the item title input element.
    */
   @ViewChild('itemTitleInput') private itemTitleInput: ElementRef;
+
+  /**
+   * Callback for the "change" event of the selection checkbox.
+   *
+   * @param ev The material checkbox change event object.
+   */
+  onSelectionCheckboxChange(ev: MatCheckboxChange): void {
+    this.toggleSelection.next(ev.checked);
+  }
 
   /**
    * Callback for the "dblclick" event on the item title.

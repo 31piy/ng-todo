@@ -1,5 +1,15 @@
+@import "~@angular/material/theming";
+
 .no-items-message {
   margin-top: 1rem;
   text-align: center;
-  color: #ccc;
+  color: mat-color($mat-grey, 400);
+}
+
+app-todo-list-item {
+  border: 2px solid transparent;
+
+  &.focused {
+    border-color: mat-color($mat-pink, 400);
+  }
 }

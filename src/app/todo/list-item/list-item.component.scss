@@ -1,14 +1,24 @@
+@import "~@angular/material/theming";
+
 :host {
   position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
+
+  &:hover,
+  &.selected {
+    background-color: rgb(238, 238, 238);
+  }
 
   &:hover {
-    background-color: rgb(238, 238, 238);
-
     .actions {
       visibility: visible;
     }
   }
+}
+
+.selection {
+  padding: 1rem;
 }
 
 mat-list-item {
@@ -31,7 +41,7 @@ ul.item-meta {
   margin: 0;
   padding: 0;
   display: flex;
-  color: #aaa;
+  color: mat-color($mat-grey, 400);
 
   li + li {
     margin-left: 0.5rem;
