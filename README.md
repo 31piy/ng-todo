@@ -1,27 +1,99 @@
-# NgTodo
+# TODO List
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.6.
+This project is a simple TODO list created using Angular and Angular Material
+libraries. The entire list is saved into the browser's local storage.
 
-## Development server
+# Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Adding items
+Simply use the textbox, and type in your TODO item name and press Enter. It will
+add that item to the list below.
 
-## Code scaffolding
+## Changing priority
+Once the item is in the list, hover on it, and click on the "Exclamation Sign"
+button to toggle the priority between "low" and "high". The default priority
+is "low" for every new item added to the list.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Marking items as done/undone
 
-## Build
+Hover on an item in the list, and click on the "Tick Mark" button to toggle
+done/undone state. A done item is shown in a slightly off color.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Selecting items
 
-## Running unit tests
+An item in the list can be selected/deselected by toggling on/off the checkbox
+on the item. If an item is selected, it's background color is changed to
+highlight this fact.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Deleting items
 
-## Running end-to-end tests
+Hover on an item in the list, and click on the "Trash" button to delete it from
+the list. You can also select multiple items and press <kbd>Delete</kbd> on
+your keyboard to delete those.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Editing items
 
-## Further help
+An item's title can be changed by double clicking on it. When a double click
+is performed, the item's title transforms into a text input. You can edit the
+title and press <kbd>Enter</kbd> to save it, or <kbd>Escape</kbd> to cancel
+edits.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Keyboard navigation
+
+For keyboard navigation to work, you need to click on the empty area on the
+document. The use <kbd>Up Arrow</kbd> or <kbd>Down Arrow</kbd> to move focus
+among the items and press <kbd>Space</kbd> to toggle item selection.
+
+# How to run?
+
+## Pre-requisites
+
+Please ensure you have the followings already installed on your system.
+
+1. NodeJS v14+ (with NPM)
+1. Git
+
+## Setting up Project
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/31piy/ng-todo.git
+```
+
+2. Install Dependencies
+
+```bash
+npm install
+```
+
+3. Start the local server
+
+```bash
+npm start
+```
+
+## Running Unit Tests
+
+_The unit tests are run using Karma and require a Chrome binary to be installed
+on the system._
+
+```bash
+npm test
+```
+
+## Building for production
+
+The following command will generate production assets, and will put those inside
+the `dist` folder.
+
+```bash
+npm run build -- --prod
+```
+
+# Future work
+
+- [ ] Re-arrange the items using drag-n-drop.
+- [ ] Support server side storage (using firebase?).
+- [ ] More colors and animations.
+- [ ] Keyboard shortcuts.
