@@ -93,7 +93,6 @@ npm run build -- --prod
 
 # Future work
 
-- [ ] Re-arrange the items using drag-n-drop.
-- [ ] Support server side storage (using firebase?).
-- [ ] More colors and animations.
+- [ ] Arrange items by their priority.
+- [ ] Ability to re-arrange the items using drag-n-drop.
 - [ ] Keyboard shortcuts.
